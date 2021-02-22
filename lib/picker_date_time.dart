@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:picker_date_time/src/route.dart';
 
 class Picker {
-  void show(BuildContext context) {
-    Navigator.push(
+  Future<T> show<T>(BuildContext context) {
+    return Navigator.push(
       context,
-      new PickerRoute(
-          MaterialLocalizations.of(context).modalBarrierDismissLabel),
+      new PickerRoute<T>(
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      ),
     );
   }
 }

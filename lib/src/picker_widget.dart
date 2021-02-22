@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:picker_date_time/src/model.dart';
 
 class PickerWidget extends StatefulWidget {
-  const PickerWidget({Key key, this.picker}) : super(key: key);
+  const PickerWidget({Key key, this.picker, this.title}) : super(key: key);
   final PickerModel picker;
+  final String title;
 
   @override
   _PickerWidgetState createState() => _PickerWidgetState();
@@ -63,23 +64,33 @@ class _PickerWidgetState extends State<PickerWidget> {
     return Expanded(
       child: NotificationListener<ScrollEndNotification>(
         onNotification: (ScrollEndNotification notification) {
-          debugPrint('current selected index:${controller.selectedItem}');
-          widget.picker.setCurrentIndex(key, controller.selectedItem);
+          widget.picker.setCurrentIndex(
+            key,
+            controller.selectedItem,
+            () {
+              controllers[TYPE.d] = FixedExtentScrollController(
+                  initialItem: widget.picker.getCurrentIndex(TYPE.d));
+              setState(() {});
+            },
+          );
+
           return false;
         },
         child: CupertinoPicker.builder(
+          key: ValueKey(controllers[key]),
           scrollController: controller,
           itemExtent: 36,
           itemBuilder: (context, index) {
             return Center(
               child: Text(
-                data[index],
+                '${data[index]}${buildText(key)}',
                 style: TextStyle(fontSize: 15),
               ),
             );
           },
           childCount: data.length,
-          onSelectedItemChanged: (int value) {},
+          onSelectedItemChanged: (int value) {
+          },
         ),
       ),
     );
@@ -97,7 +108,9 @@ class _PickerWidgetState extends State<PickerWidget> {
         ),
         Spacer(),
         TextButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context, widget.picker.getDate());
+          },
           child: Text(
             '确定',
             style: TextStyle(fontSize: 16),
@@ -107,9 +120,5 @@ class _PickerWidgetState extends State<PickerWidget> {
     );
   }
 
-  
-  String buildText(TYPE t){
-
-  }
-  
+  String buildText(TYPE t) => typeText[t];
 }

@@ -8,21 +8,24 @@ abstract class PickerModel<T> {
 
   List<TYPE> getKeys();
 
-  void setCurrentIndex(TYPE t, int index);
+  void setCurrentIndex(TYPE t, int index,VoidCallback onChange);
 
   void resetDayData();
+
+  DateTime getDate();
 }
 
 class TimePickerModel extends PickerModel<int> {
   TimePickerModel({
-    List<TYPE> showVal = TYPE.values,
+    this.showVal,
     this.maxTime,
     this.minTime,
     this.currentTime,
   }) {
-    initData(showVal);
+    initData();
   }
 
+  final List<TYPE> showVal;
   final DateTime maxTime;
   final DateTime minTime;
   final DateTime currentTime;
@@ -31,7 +34,7 @@ class TimePickerModel extends PickerModel<int> {
 
   final Map<TYPE, int> current = new HashMap();
 
-  void initData(List<TYPE> showVal) {
+  void initData() {
     if (showVal.contains(TYPE.Y)) {
       data[TYPE.Y] = List.generate(
           maxTime.year - minTime.year + 1, (index) => minTime.year + index);
@@ -44,7 +47,7 @@ class TimePickerModel extends PickerModel<int> {
     }
 
     if (showVal.contains(TYPE.d)) {
-      final timeDay = DateTime(currentTime.year, currentTime.month, 0).day;
+      final timeDay = DateTime(currentTime.year, currentTime.month + 1, 0).day;
       data[TYPE.d] = List.generate(timeDay, (index) => index + 1);
 
       current[TYPE.d] = data[TYPE.d].indexOf(currentTime.day);
@@ -67,11 +70,18 @@ class TimePickerModel extends PickerModel<int> {
   }
 
   @override
-  void setCurrentIndex(TYPE t, int index) {
+  void setCurrentIndex(TYPE t, int index,VoidCallback onChange) {
     current[t] = index;
-    //设置完成后判断 day
-    if (data.keys.contains(TYPE.d)) {
-      final time = DateTime(data[TYPE.Y][current[TYPE.Y]]);
+    //判断是否有day的显示 并且修改了年月
+    if (data.keys.contains(TYPE.d) && (t == TYPE.Y || t == TYPE.M)) {
+      final timeDay = DateTime(
+          data[TYPE.Y][current[TYPE.Y]], data[TYPE.M][current[TYPE.M]]+1, 0);
+
+
+      if (timeDay.day != data[TYPE.d].length) {
+        data[TYPE.d] = List.generate(timeDay.day, (index) => index + 1);
+        onChange?.call();
+      }
     }
   }
 
@@ -86,6 +96,19 @@ class TimePickerModel extends PickerModel<int> {
 
   @override
   void resetDayData() {}
+
+  @override
+  DateTime getDate() {
+    final year =
+        showVal.contains(TYPE.Y) ? data[TYPE.Y][current[TYPE.Y]] : null;
+    final month = showVal.contains(TYPE.M) ? data[TYPE.M][current[TYPE.M]] : 0;
+    final day = showVal.contains(TYPE.d) ? data[TYPE.d][current[TYPE.d]] : null;
+    final hours = showVal.contains(TYPE.H) ? data[TYPE.H][current[TYPE.H]] : 0;
+    final minute =
+        showVal.contains(TYPE.m) ? data[TYPE.m][current[TYPE.m]] : null;
+    final second = showVal.contains(TYPE.s) ? data[TYPE.s][current[TYPE.s]] : 0;
+    return DateTime(year, month, day, hours, minute, second);
+  }
 }
 
 enum TYPE { Y, M, d, H, m, s }

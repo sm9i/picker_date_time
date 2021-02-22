@@ -41,8 +41,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    Picker().show(context);
+  Future<void> _incrementCounter() async {
+    print(await Picker().show(context));
   }
 
   @override

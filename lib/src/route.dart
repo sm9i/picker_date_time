@@ -3,7 +3,7 @@ import 'package:picker_date_time/src/model.dart';
 import 'package:picker_date_time/src/picker_widget.dart';
 
 class PickerRoute<T> extends PopupRoute<T> {
-  PickerRoute(this.barrierLabel);
+  PickerRoute({this.barrierLabel, this.title});
 
   @override
   Color get barrierColor => Colors.black54;
@@ -14,7 +14,7 @@ class PickerRoute<T> extends PopupRoute<T> {
   @override
   final String barrierLabel;
 
-  AnimationController _animationController;
+  final String title;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
@@ -27,6 +27,7 @@ class PickerRoute<T> extends PopupRoute<T> {
           maxTime: DateTime(2999),
           minTime: DateTime(2000),
           currentTime: DateTime.now(),
+          showVal: [TYPE.Y, TYPE.m, TYPE.d, TYPE.H, TYPE.M],
         ),
         // onChanged: onChanged,
         // locale: this.locale,
