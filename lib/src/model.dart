@@ -2,13 +2,13 @@ import 'dart:collection';
 import 'dart:ui';
 
 abstract class PickerModel<T> {
-  int getCurrentIndex(TYPE t);
+  int getCurrentIndex(DateType t);
 
-  List<T> getValues(TYPE t);
+  List<T> getValues(DateType t);
 
-  List<TYPE> getKeys();
+  List<DateType> getKeys();
 
-  void setCurrentIndex(TYPE t, int index,VoidCallback onChange);
+  void setCurrentIndex(DateType t, int index, VoidCallback onChange);
 
   void resetDayData();
 
@@ -25,99 +25,87 @@ class TimePickerModel extends PickerModel<int> {
     initData();
   }
 
-  final List<TYPE> showVal;
+  final List<DateType> showVal;
   final DateTime maxTime;
   final DateTime minTime;
   final DateTime currentTime;
 
-  final Map<TYPE, List<int>> data = LinkedHashMap();
+  final Map<DateType, List<int>> data = LinkedHashMap();
 
-  final Map<TYPE, int> current = new HashMap();
+  final Map<DateType, int> current = new HashMap();
 
   void initData() {
-    if (showVal.contains(TYPE.Y)) {
-      data[TYPE.Y] = List.generate(
-          maxTime.year - minTime.year + 1, (index) => minTime.year + index);
-      current[TYPE.Y] = data[TYPE.Y].indexOf(currentTime.year);
+    if (showVal.contains(DateType.Y)) {
+      data[DateType.Y] = List.generate(maxTime.year - minTime.year + 1, (index) => minTime.year + index);
+      current[DateType.Y] = data[DateType.Y].indexOf(currentTime.year);
     }
 
-    if (showVal.contains(TYPE.M)) {
-      data[TYPE.M] = List.generate(12, (index) => index + 1);
-      current[TYPE.M] = data[TYPE.M].indexOf(currentTime.month);
+    if (showVal.contains(DateType.M)) {
+      data[DateType.M] = List.generate(12, (index) => index + 1);
+      current[DateType.M] = data[DateType.M].indexOf(currentTime.month);
     }
 
-    if (showVal.contains(TYPE.d)) {
+    if (showVal.contains(DateType.d)) {
       final timeDay = DateTime(currentTime.year, currentTime.month + 1, 0).day;
-      data[TYPE.d] = List.generate(timeDay, (index) => index + 1);
+      data[DateType.d] = List.generate(timeDay, (index) => index + 1);
 
-      current[TYPE.d] = data[TYPE.d].indexOf(currentTime.day);
+      current[DateType.d] = data[DateType.d].indexOf(currentTime.day);
     }
 
-    if (showVal.contains(TYPE.H)) {
-      data[TYPE.H] = List.generate(24, (index) => index + 1);
-      current[TYPE.H] = data[TYPE.H].indexOf(currentTime.hour);
+    if (showVal.contains(DateType.H)) {
+      data[DateType.H] = List.generate(24, (index) => index + 1);
+      current[DateType.H] = data[DateType.H].indexOf(currentTime.hour);
     }
 
-    if (showVal.contains(TYPE.m)) {
-      data[TYPE.m] = List.generate(60, (index) => index + 1);
-      current[TYPE.m] = data[TYPE.m].indexOf(currentTime.minute);
+    if (showVal.contains(DateType.m)) {
+      data[DateType.m] = List.generate(60, (index) => index + 1);
+      current[DateType.m] = data[DateType.m].indexOf(currentTime.minute);
     }
 
-    if (showVal.contains(TYPE.s)) {
-      data[TYPE.s] = List.generate(60, (index) => index + 1);
-      current[TYPE.s] = data[TYPE.s].indexOf(currentTime.second);
+    if (showVal.contains(DateType.s)) {
+      data[DateType.s] = List.generate(60, (index) => index + 1);
+      current[DateType.s] = data[DateType.s].indexOf(currentTime.second);
     }
   }
 
   @override
-  void setCurrentIndex(TYPE t, int index,VoidCallback onChange) {
+  void setCurrentIndex(DateType t, int index, VoidCallback onChange) {
     current[t] = index;
     //判断是否有day的显示 并且修改了年月
-    if (data.keys.contains(TYPE.d) && (t == TYPE.Y || t == TYPE.M)) {
-      final timeDay = DateTime(
-          data[TYPE.Y][current[TYPE.Y]], data[TYPE.M][current[TYPE.M]]+1, 0);
+    if (data.keys.contains(DateType.d) && (t == DateType.Y || t == DateType.M)) {
+      final timeDay = DateTime(data[DateType.Y][current[DateType.Y]], data[DateType.M][current[DateType.M]] + 1, 0);
 
-
-      if (timeDay.day != data[TYPE.d].length) {
-        data[TYPE.d] = List.generate(timeDay.day, (index) => index + 1);
+      if (timeDay.day != data[DateType.d].length) {
+        data[DateType.d] = List.generate(timeDay.day, (index) => index + 1);
         onChange?.call();
       }
     }
   }
 
   @override
-  int getCurrentIndex(TYPE t) => current[t] ?? 0;
+  int getCurrentIndex(DateType t) => current[t] ?? 0;
 
   @override
-  List<int> getValues(TYPE t) => data[t];
+  List<int> getValues(DateType t) => data[t];
 
   @override
-  List<TYPE> getKeys() => data.keys.toList();
+  List<DateType> getKeys() => data.keys.toList();
 
   @override
   void resetDayData() {}
 
   @override
   DateTime getDate() {
-    final year =
-        showVal.contains(TYPE.Y) ? data[TYPE.Y][current[TYPE.Y]] : null;
-    final month = showVal.contains(TYPE.M) ? data[TYPE.M][current[TYPE.M]] : 0;
-    final day = showVal.contains(TYPE.d) ? data[TYPE.d][current[TYPE.d]] : null;
-    final hours = showVal.contains(TYPE.H) ? data[TYPE.H][current[TYPE.H]] : 0;
-    final minute =
-        showVal.contains(TYPE.m) ? data[TYPE.m][current[TYPE.m]] : null;
-    final second = showVal.contains(TYPE.s) ? data[TYPE.s][current[TYPE.s]] : 0;
+    final year = showVal.contains(DateType.Y) ? data[DateType.Y][current[DateType.Y]] : null;
+    final month = showVal.contains(DateType.M) ? data[DateType.M][current[DateType.M]] : 0;
+    final day = showVal.contains(DateType.d) ? data[DateType.d][current[DateType.d]] : null;
+    final hours = showVal.contains(DateType.H) ? data[DateType.H][current[DateType.H]] : 0;
+    final minute = showVal.contains(DateType.m) ? data[DateType.m][current[DateType.m]] : null;
+    final second = showVal.contains(DateType.s) ? data[DateType.s][current[DateType.s]] : 0;
     return DateTime(year, month, day, hours, minute, second);
   }
 }
 
-enum TYPE { Y, M, d, H, m, s }
+enum DateType { Y, M, d, H, m, s }
 
-const Map<TYPE, String> typeText = {
-  TYPE.Y: '年',
-  TYPE.M: '月',
-  TYPE.d: '日',
-  TYPE.H: '时',
-  TYPE.m: '分',
-  TYPE.s: '秒'
-};
+const Map<DateType, String> typeText = {DateType.Y: '年', DateType.M: '月', DateType.d: '日', DateType.H: '时', DateType.m: '分', DateType.s: '秒'};

@@ -12,13 +12,12 @@ class PickerWidget extends StatefulWidget {
 }
 
 class _PickerWidgetState extends State<PickerWidget> {
-  Map<TYPE, FixedExtentScrollController> controllers = {};
+  Map<DateType, FixedExtentScrollController> controllers = {};
 
   @override
   void initState() {
     widget.picker.getKeys().forEach((element) {
-      controllers[element] = FixedExtentScrollController(
-          initialItem: widget.picker.getCurrentIndex(element));
+      controllers[element] = FixedExtentScrollController(initialItem: widget.picker.getCurrentIndex(element));
     });
     super.initState();
   }
@@ -44,10 +43,7 @@ class _PickerWidgetState extends State<PickerWidget> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: widget.picker
-                        .getKeys()
-                        .map((key) => buildColumnItem(key))
-                        .toList(),
+                    children: widget.picker.getKeys().map((key) => buildColumnItem(key)).toList(),
                   ),
                 ),
               ),
@@ -58,7 +54,7 @@ class _PickerWidgetState extends State<PickerWidget> {
     );
   }
 
-  Widget buildColumnItem(TYPE key) {
+  Widget buildColumnItem(DateType key) {
     final data = widget.picker.getValues(key);
     final controller = controllers[key];
     return Expanded(
@@ -68,8 +64,7 @@ class _PickerWidgetState extends State<PickerWidget> {
             key,
             controller.selectedItem,
             () {
-              controllers[TYPE.d] = FixedExtentScrollController(
-                  initialItem: widget.picker.getCurrentIndex(TYPE.d));
+              controllers[DateType.d] = FixedExtentScrollController(initialItem: widget.picker.getCurrentIndex(DateType.d));
               setState(() {});
             },
           );
@@ -89,8 +84,7 @@ class _PickerWidgetState extends State<PickerWidget> {
             );
           },
           childCount: data.length,
-          onSelectedItemChanged: (int value) {
-          },
+          onSelectedItemChanged: (int value) {},
         ),
       ),
     );
@@ -106,7 +100,16 @@ class _PickerWidgetState extends State<PickerWidget> {
             style: TextStyle(color: Colors.grey, fontSize: 16),
           ),
         ),
-        Spacer(),
+        Expanded(
+          child: widget.title != null
+              ? Center(
+                  child: Text(
+                    widget.title ?? '',
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                )
+              : SizedBox(),
+        ),
         TextButton(
           onPressed: () {
             Navigator.pop(context, widget.picker.getDate());
@@ -120,5 +123,5 @@ class _PickerWidgetState extends State<PickerWidget> {
     );
   }
 
-  String buildText(TYPE t) => typeText[t];
+  String buildText(DateType t) => typeText[t];
 }

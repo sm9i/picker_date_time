@@ -42,7 +42,15 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   Future<void> _incrementCounter() async {
-    print(await Picker().show(context));
+    print(
+      await Picker().show(
+        context,
+        title: "选择文件",
+        types: [DateType.Y, DateType.M, DateType.d, DateType.H, DateType.m],
+        min: DateTime(1999),
+        max: DateTime(2023),
+      ),
+    );
   }
 
   @override
