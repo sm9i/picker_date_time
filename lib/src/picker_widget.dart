@@ -105,7 +105,10 @@ class _PickerWidgetState extends State<PickerWidget> {
               ? Center(
                   child: Text(
                     widget.title ?? '',
-                    style: Theme.of(context).textTheme.headline6,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 )
               : SizedBox(),

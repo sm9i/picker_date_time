@@ -20,7 +20,14 @@ class Picker {
     DateTime max,
     DateTime min,
     DateTime current,
-    List<DateType> types,
+    List<DateType> types = const [
+      DateType.Y,
+      DateType.M,
+      DateType.d,
+      DateType.Y,
+      DateType.H,
+      DateType.m,
+    ],
   }) {
     if (max != null && min != null) {
       assert(max.microsecondsSinceEpoch > min.microsecondsSinceEpoch);
