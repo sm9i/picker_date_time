@@ -11,8 +11,10 @@ export 'src/picker_widget.dart';
 export 'src/route.dart';
 
 class Picker {
+  const Picker._();
+
   //选择时间
-  Future<DateTime> show(
+  static Future<DateTime> show(
     BuildContext context, {
     String title,
     DateTime max,
@@ -27,7 +29,8 @@ class Picker {
     return Navigator.push(
       context,
       new PickerRoute<DateTime>(
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel:
+            MaterialLocalizations.of(context).modalBarrierDismissLabel,
         title: title,
         max: max,
         min: min,

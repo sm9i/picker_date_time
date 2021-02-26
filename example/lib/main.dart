@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _incrementCounter() async {
     print(
-      await Picker().show(
+      await Picker.show(
         context,
         title: "选择文件",
         types: [DateType.Y, DateType.M, DateType.d, DateType.H, DateType.m],
