@@ -17,7 +17,8 @@ class _PickerWidgetState extends State<PickerWidget> {
   @override
   void initState() {
     widget.picker.getKeys().forEach((element) {
-      controllers[element] = FixedExtentScrollController(initialItem: widget.picker.getCurrentIndex(element));
+      controllers[element] = FixedExtentScrollController(
+          initialItem: widget.picker.getCurrentIndex(element));
     });
     super.initState();
   }
@@ -43,7 +44,10 @@ class _PickerWidgetState extends State<PickerWidget> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: widget.picker.getKeys().map((key) => buildColumnItem(key)).toList(),
+                    children: widget.picker
+                        .getKeys()
+                        .map((key) => buildColumnItem(key))
+                        .toList(),
                   ),
                 ),
               ),
@@ -64,7 +68,8 @@ class _PickerWidgetState extends State<PickerWidget> {
             key,
             controller.selectedItem,
             () {
-              controllers[DateType.d] = FixedExtentScrollController(initialItem: widget.picker.getCurrentIndex(DateType.d));
+              controllers[DateType.d] = FixedExtentScrollController(
+                  initialItem: widget.picker.getCurrentIndex(DateType.d));
               setState(() {});
             },
           );
@@ -94,7 +99,7 @@ class _PickerWidgetState extends State<PickerWidget> {
     return Row(
       children: <Widget>[
         TextButton(
-          onPressed: () {},
+          onPressed: () => Navigator.pop(context),
           child: Text(
             '取消',
             style: TextStyle(color: Colors.grey, fontSize: 16),
