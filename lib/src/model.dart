@@ -54,17 +54,17 @@ class TimePickerModel extends PickerModel<int> {
     }
 
     if (showVal.contains(DateType.H)) {
-      data[DateType.H] = List.generate(23, (index) => index);
+      data[DateType.H] = List.generate(24, (index) => index);
       current[DateType.H] = data[DateType.H].indexOf(currentTime.hour);
     }
 
     if (showVal.contains(DateType.m)) {
-      data[DateType.m] = List.generate(59, (index) => index);
+      data[DateType.m] = List.generate(60, (index) => index);
       current[DateType.m] = data[DateType.m].indexOf(currentTime.minute);
     }
 
     if (showVal.contains(DateType.s)) {
-      data[DateType.s] = List.generate(59, (index) => index);
+      data[DateType.s] = List.generate(60, (index) => index);
       current[DateType.s] = data[DateType.s].indexOf(currentTime.second);
     }
   }
