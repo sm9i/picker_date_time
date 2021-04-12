@@ -36,7 +36,8 @@ class TimePickerModel extends PickerModel<int> {
 
   void initData() {
     if (showVal.contains(DateType.Y)) {
-      data[DateType.Y] = List.generate(maxTime.year - minTime.year + 1, (index) => minTime.year + index);
+      data[DateType.Y] = List.generate(
+          maxTime.year - minTime.year + 1, (index) => minTime.year + index);
       current[DateType.Y] = data[DateType.Y].indexOf(currentTime.year);
     }
 
@@ -53,17 +54,17 @@ class TimePickerModel extends PickerModel<int> {
     }
 
     if (showVal.contains(DateType.H)) {
-      data[DateType.H] = List.generate(24, (index) => index + 1);
+      data[DateType.H] = List.generate(23, (index) => index);
       current[DateType.H] = data[DateType.H].indexOf(currentTime.hour);
     }
 
     if (showVal.contains(DateType.m)) {
-      data[DateType.m] = List.generate(60, (index) => index + 1);
+      data[DateType.m] = List.generate(59, (index) => index);
       current[DateType.m] = data[DateType.m].indexOf(currentTime.minute);
     }
 
     if (showVal.contains(DateType.s)) {
-      data[DateType.s] = List.generate(60, (index) => index + 1);
+      data[DateType.s] = List.generate(59, (index) => index);
       current[DateType.s] = data[DateType.s].indexOf(currentTime.second);
     }
   }
@@ -72,8 +73,10 @@ class TimePickerModel extends PickerModel<int> {
   void setCurrentIndex(DateType t, int index, VoidCallback onChange) {
     current[t] = index;
     //判断是否有day的显示 并且修改了年月
-    if (data.keys.contains(DateType.d) && (t == DateType.Y || t == DateType.M)) {
-      final timeDay = DateTime(data[DateType.Y][current[DateType.Y]], data[DateType.M][current[DateType.M]] + 1, 0);
+    if (data.keys.contains(DateType.d) &&
+        (t == DateType.Y || t == DateType.M)) {
+      final timeDay = DateTime(data[DateType.Y][current[DateType.Y]],
+          data[DateType.M][current[DateType.M]] + 1, 0);
 
       if (timeDay.day != data[DateType.d].length) {
         data[DateType.d] = List.generate(timeDay.day, (index) => index + 1);
@@ -96,16 +99,35 @@ class TimePickerModel extends PickerModel<int> {
 
   @override
   DateTime getDate() {
-    final year = showVal.contains(DateType.Y) ? data[DateType.Y][current[DateType.Y]] : null;
-    final month = showVal.contains(DateType.M) ? data[DateType.M][current[DateType.M]] : 0;
-    final day = showVal.contains(DateType.d) ? data[DateType.d][current[DateType.d]] : null;
-    final hours = showVal.contains(DateType.H) ? data[DateType.H][current[DateType.H]] : 0;
-    final minute = showVal.contains(DateType.m) ? data[DateType.m][current[DateType.m]] : null;
-    final second = showVal.contains(DateType.s) ? data[DateType.s][current[DateType.s]] : 0;
+    final year = showVal.contains(DateType.Y)
+        ? data[DateType.Y][current[DateType.Y]]
+        : null;
+    final month = showVal.contains(DateType.M)
+        ? data[DateType.M][current[DateType.M]]
+        : 0;
+    final day = showVal.contains(DateType.d)
+        ? data[DateType.d][current[DateType.d]]
+        : null;
+    final hours = showVal.contains(DateType.H)
+        ? data[DateType.H][current[DateType.H]]
+        : 0;
+    final minute = showVal.contains(DateType.m)
+        ? data[DateType.m][current[DateType.m]]
+        : null;
+    final second = showVal.contains(DateType.s)
+        ? data[DateType.s][current[DateType.s]]
+        : 0;
     return DateTime(year, month, day, hours, minute, second);
   }
 }
 
 enum DateType { Y, M, d, H, m, s }
 
-const Map<DateType, String> typeText = {DateType.Y: '年', DateType.M: '月', DateType.d: '日', DateType.H: '时', DateType.m: '分', DateType.s: '秒'};
+const Map<DateType, String> typeText = {
+  DateType.Y: '年',
+  DateType.M: '月',
+  DateType.d: '日',
+  DateType.H: '时',
+  DateType.m: '分',
+  DateType.s: '秒'
+};
