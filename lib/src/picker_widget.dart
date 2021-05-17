@@ -25,7 +25,7 @@ class _PickerWidgetState extends State<PickerWidget> {
 
   @override
   void dispose() {
-    controllers.values.forEach((element) => element?.dispose());
+    controllers.values.forEach((element) => element.dispose());
     super.dispose();
   }
 
