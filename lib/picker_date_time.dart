@@ -14,12 +14,12 @@ class Picker {
   const Picker._();
 
   //选择时间
-  static Future<DateTime> show(
+  static Future<DateTime?> show(
     BuildContext context, {
-    String title,
-    DateTime max,
-    DateTime min,
-    DateTime current,
+    String? title,
+    DateTime? max,
+    DateTime? min,
+    DateTime? current,
     List<DateType> types = const [
       DateType.Y,
       DateType.M,

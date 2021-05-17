@@ -7,11 +7,11 @@ import 'model.dart';
 
 class PickerRoute<T> extends PopupRoute<T> {
   PickerRoute({
-    @required this.barrierLabel,
-    @required this.title,
-    @required this.max,
-    @required this.min,
-    @required this.current,
+    required this.barrierLabel,
+    required this.title,
+    required this.max,
+    required this.min,
+    required this.current,
     this.types = DateType.values,
   });
 
@@ -24,11 +24,11 @@ class PickerRoute<T> extends PopupRoute<T> {
   @override
   final String barrierLabel;
 
-  final String title;
+  final String? title;
 
-  final DateTime max;
-  final DateTime min;
-  final DateTime current;
+  final DateTime? max;
+  final DateTime? min;
+  final DateTime? current;
   final List<DateType> types;
 
   @override

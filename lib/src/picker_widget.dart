@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:picker_date_time/src/model.dart';
 
 class PickerWidget extends StatefulWidget {
-  const PickerWidget({Key key, this.picker, this.title}) : super(key: key);
-  final PickerModel picker;
-  final String title;
+  const PickerWidget({Key? key, this.picker, this.title}) : super(key: key);
+  final PickerModel? picker;
+  final String? title;
 
   @override
   _PickerWidgetState createState() => _PickerWidgetState();
@@ -16,9 +16,9 @@ class _PickerWidgetState extends State<PickerWidget> {
 
   @override
   void initState() {
-    widget.picker.getKeys().forEach((element) {
+    widget.picker!.getKeys().forEach((element) {
       controllers[element] = FixedExtentScrollController(
-          initialItem: widget.picker.getCurrentIndex(element));
+          initialItem: widget.picker!.getCurrentIndex(element));
     });
     super.initState();
   }
@@ -44,7 +44,7 @@ class _PickerWidgetState extends State<PickerWidget> {
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 15.0),
                   child: Row(
-                    children: widget.picker
+                    children: widget.picker!
                         .getKeys()
                         .map((key) => buildColumnItem(key))
                         .toList(),
@@ -59,17 +59,17 @@ class _PickerWidgetState extends State<PickerWidget> {
   }
 
   Widget buildColumnItem(DateType key) {
-    final data = widget.picker.getValues(key);
+    final data = widget.picker!.getValues(key)!;
     final controller = controllers[key];
     return Expanded(
       child: NotificationListener<ScrollEndNotification>(
         onNotification: (ScrollEndNotification notification) {
-          widget.picker.setCurrentIndex(
+          widget.picker!.setCurrentIndex(
             key,
-            controller.selectedItem,
+            controller!.selectedItem,
             () {
               controllers[DateType.d] = FixedExtentScrollController(
-                  initialItem: widget.picker.getCurrentIndex(DateType.d));
+                  initialItem: widget.picker!.getCurrentIndex(DateType.d));
               setState(() {});
             },
           );
@@ -120,7 +120,7 @@ class _PickerWidgetState extends State<PickerWidget> {
         ),
         TextButton(
           onPressed: () {
-            Navigator.pop(context, widget.picker.getDate());
+            Navigator.pop(context, widget.picker!.getDate());
           },
           child: Text(
             '确定',
@@ -131,5 +131,5 @@ class _PickerWidgetState extends State<PickerWidget> {
     );
   }
 
-  String buildText(DateType t) => typeText[t];
+  String? buildText(DateType t) => typeText[t];
 }
